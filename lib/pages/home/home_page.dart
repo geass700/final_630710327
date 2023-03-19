@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   List<Poll>? _polls;
   var _isLoading = false;
   String _errMessage ='';
-  String isnull = '001';
+
 
   @override
   void initState() {
