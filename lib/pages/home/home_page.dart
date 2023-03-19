@@ -1,3 +1,4 @@
+import 'package:election_2566_poll/services/api.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/poll.dart';
@@ -13,6 +14,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Poll>? _polls;
   var _isLoading = false;
+  String _errMessage ='';
+  String isnull = '001';
 
   @override
   void initState() {
@@ -22,7 +25,31 @@ class _HomePageState extends State<HomePage> {
 
   _loadData() async {
     // todo: Load list of polls here
+    setState(() {
+      _isLoading = true;
+
+    });
+
+    await Future.delayed(const Duration(seconds: 3), () {});
+
+    try {
+      var result = await ApiClient().getPoll();
+      setState(() {
+        _polls = result as List<Poll>?;
+      });
+    } catch (e) {
+      setState(() {
+        _errMessage = e.toString();
+
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +61,20 @@ class _HomePageState extends State<HomePage> {
             child: Stack(
               children: [
                 if (_polls != null) _buildList(),
+
                 if (_isLoading) _buildProgress(),
+                /*Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+
+                        Text('test')
+
+                      ],
+                    ),
+                  ),
+                )*/
               ],
             ),
           ),
@@ -48,7 +88,7 @@ class _HomePageState extends State<HomePage> {
       itemCount: _polls!.length,
       itemBuilder: (BuildContext context, int index) {
         // todo: Create your poll item by replacing this Container()
-        return Container();
+        return Text(_polls![index].question.toString());
       },
     );
   }
