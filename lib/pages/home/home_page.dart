@@ -88,7 +88,17 @@ class _HomePageState extends State<HomePage> {
       itemCount: _polls!.length,
       itemBuilder: (BuildContext context, int index) {
         // todo: Create your poll item by replacing this Container()
-        return Text(_polls![index].question.toString());
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(_polls![index].question.toString()),
+                Text(_polls![index].choices.toString())
+              ],
+            ),
+          ),
+        );
       },
     );
   }
